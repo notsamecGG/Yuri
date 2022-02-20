@@ -27,10 +27,10 @@ struct Renderer
         const int objsSize = sizeSum();
         posBuffer.reserve(objsSize);
 
-        for (GameObject obj : objs)
+        for (GameObject* obj : objs)
         {
             std::vector<Vector2D> objPositions;
-            obj.toArray(&objPositions);
+            obj->toArray(&objPositions);
 
             for (Vector2D vec : objPositions)
                 posBuffer.push_back(vec.x + vec.y * DISPLAY_X);
@@ -51,40 +51,46 @@ struct Renderer
         std::cout << display << std::flush;
     }
 
-    void render(GameObject& go)
+    void render(GameObject* go)
     {
         objs.push_back(go);
         // charNum = input.size();
-
-        render();
     }
     
-    // void clear()
-    // {
-    //     std::string clearStr("");
-    //     buffer.clear();
+    void clear()
+    {
+        // std::string clearStr("");
+        // buffer.clear();
 
-    //     while(charNum)
-    //     {
-    //         clearStr += "\b";
-    //         charNum--;
-    //     }
+        // while(charNum)
+        // {
+        //     clearStr += "\b";
+        //     charNum--;
+        // }
 
-    //     std::cout << clearStr << std::flush;
-    // }
+        std::string clearStr("");
+
+        for (int i = 0; i < (DISPLAY_X - 10) * (DISPLAY_Y - 10); i++)
+        {
+            clearStr += "\b ";
+        }
+
+        std::cout << clearStr << std::flush;
+        // std::cout << "clear" << std::endl;
+    }
 
 private:
     int sizeSum()
     {
         int size = 0;
 
-        for (GameObject obj : objs)
-            size += obj.size.value();
+        for (GameObject* obj : objs)
+            size += obj->size.value();
 
         return size;
     }
 
 private:
     unsigned int charNum; // count of all chars in fram (formated)
-    std::vector<GameObject> objs;
+    std::vector<GameObject*> objs;
 };
