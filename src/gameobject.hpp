@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <list>
+#include <vector>
 
 
 struct Vector2D
@@ -64,11 +65,11 @@ struct GameObject
     unsigned int radius;
 
     GameObject(const int &x, const int &y, const unsigned int &width, const unsigned int &height)
-        : position(x, y), size(width, height) { radius = std::max(width, height); } 
+        : position(x, y), size(width, height) { radius = std::max(width, height); _updateCenter(); } 
     GameObject(const unsigned int &width, const unsigned int &height)
-        : position(), size(width, height) { radius = std::max(width, height); }
+        : position(), size(width, height) { radius = std::max(width, height); _updateCenter(); }
     GameObject() 
-        : position(), size(1, 1) { radius = 1; } 
+        : position(), size(1, 1) { radius = 1; _updateCenter(); } 
 
     Vector2D getCenter()
     {
@@ -111,13 +112,15 @@ struct GameObject
         _updateCenter();
     }
 
-    void toArray(Vector2D* out, int offset)
+    void toArray(std::vector<Vector2D> *out)
     {
-        // Vector2D arr[size.value()];
+        out->reserve(size.value());
 
         for (int y = 0; y < size.y; y++)
+        {
             for (int x = 0; x < size.x; x++)
-                *(out + (x *(y + 1) + offset)) = Vector2D(position.x + x, position.y + y);
+                out->push_back(Vector2D(position.x + x, position.y + y));
+        }
     }
 
 private:
