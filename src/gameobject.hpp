@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cmath>
-#include <string>
+#include <list>
 
 
 struct Vector2D
@@ -47,6 +47,11 @@ struct Vector2D
         int new_y = std::abs(y - other.y);
 
         return std::sqrt(std::pow(new_x, 2) + std::pow(new_y, 2));
+    }
+
+    int value() const
+    {
+        return x * y;
     }
 };
 
@@ -106,15 +111,13 @@ struct GameObject
         _updateCenter();
     }
 
-    std::string stringify() const
+    void toArray(Vector2D* out, int offset)
     {
-        std::string base(size.x, '#');
-        
-        base += '\n';
+        // Vector2D arr[size.value()];
 
-        mulString(&base, size.y);
-
-        return base;
+        for (int y = 0; y < size.y; y++)
+            for (int x = 0; x < size.x; x++)
+                *(out + (x *(y + 1) + offset)) = Vector2D(position.x + x, position.y + y);
     }
 
 private:

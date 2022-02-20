@@ -1,12 +1,13 @@
 #include <iostream>
 
 #include "gameobject.hpp"
+#include "renderer.hpp"
 
 
 int main()
 {
     GameObject e(10, 10, 4, 4);
-
-    std::cout << e.stringifyPos() << std::flush;
-    std::cout << e.stringify() << std::endl;
+    Renderer r;
+    
+    r.render(e);
 }
