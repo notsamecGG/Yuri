@@ -81,7 +81,10 @@ struct GameObject
     {
         int distance = center.distance(other.center);
 
-        return distance <= radius + other.radius;
+        // if (distance < radius + other.radius)
+        //     std::cout << "collision" << std::endl;
+
+        return distance < radius /*+ other.radius*/;
     }
 
     /**
@@ -89,12 +92,21 @@ struct GameObject
      * 
      * @param other game object
      */
-    bool collision(const GameObject& other) const
+    bool collision(const GameObject& other, const Vector2D& speed) const
     {
         if (cheapCollision(other))
         {
             // check if the object are colliding vertically or horizontally
         }
+        int x_check = position.x + !std::signbit(speed.x) * size.x;
+        int y_check = position.y + !std::signbit(speed.y) * size.y;
+
+        if (x_check >= other.position.x && x_check < other.position.x + other.size.x)
+            if (y_check >= other.position.y && y_check < other.position.y + other.size.y)
+            {
+                std::cout << "collision" << std::endl;
+                return true;
+            }
 
         return false;
     }

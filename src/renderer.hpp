@@ -48,6 +48,7 @@ struct Renderer
             display[DISPLAY_X - 1 + y * DISPLAY_X] = '\n';
         }
 
+        std::cout << "\033[2J\033[1;1H" << std::flush;
         std::cout << display << std::flush;
     }
 
@@ -76,7 +77,6 @@ struct Renderer
         }
 
         std::cout << clearStr << std::flush;
-        // std::cout << "clear" << std::endl;
     }
 
 private:
