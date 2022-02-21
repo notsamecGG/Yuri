@@ -101,12 +101,9 @@ struct GameObject
         int x_check = position.x + !std::signbit(speed.x) * size.x;
         int y_check = position.y + !std::signbit(speed.y) * size.y;
 
-        if (x_check >= other.position.x && x_check < other.position.x + other.size.x)
-            if (y_check >= other.position.y && y_check < other.position.y + other.size.y)
-            {
-                std::cout << "collision" << std::endl;
+        if (x_check >= other.position.x && x_check <= other.position.x + other.size.x)
+            if (y_check >= other.position.y && y_check <= other.position.y + other.size.y)
                 return true;
-            }
 
         return false;
     }

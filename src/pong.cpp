@@ -19,38 +19,33 @@ int main()
     // r.render(&wright);
 
 
-    GameObject e1(3, 1, 1, 5);
-    GameObject ball(35, 10, 2, 2);
-    GameObject e2(65, 1, 1, 5);
+    GameObject e1(3, 7, 1, 6);
+    GameObject ball(35, 9, 2, 2);
+    GameObject e2(65, 7, 1, 6);
     
     r.render(&e1);
     r.render(&e2);
     r.render(&ball);
 
     std::vector<GameObject*> bouncyWalls = { &wtop, &wbot };
+    std::vector<GameObject*> pans = { &e1, &e2 };
     std::vector<GameObject*> finishWalls = { &wright, &wleft };
 
     Vector2D ballSpeed(1, 1);
 
     while (true)
     {
-        // for (int i = 0; i < 13; i++)
-        // {
-        //     // make this actually remove the text
-        //     std::cout << "\033[2J\033[1;1H" << std::flush;
-        //     // std::cout << "\x1B[3J\x1B[H" << std::flush;
-        //     e1.move(0, x);
-        //     e2.move(0, x);
-        //     r.render();
-
-        //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        // }
-
         // collision check
         for (GameObject* wall : bouncyWalls)
         {
             if (ball.collision(*wall, ballSpeed))
                 ballSpeed.y *= -1;
+        }
+
+        for (GameObject* pan : pans)
+        {
+            if (ball.collision(*pan, ballSpeed))
+                ballSpeed.x *= -1;
         }
 
         for (GameObject* wall : finishWalls)
@@ -61,6 +56,8 @@ int main()
 
         // movement update
         ball.move(ballSpeed.x, ballSpeed.y);
+        e1.move(0, ballSpeed.y);
+        e2.move(0, ballSpeed.y);
 
         // render
         // std::cout << "\033[2J\033[1;1H" << std::flush;
@@ -68,5 +65,4 @@ int main()
 
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
-    // std::cout << "\033[2J\033[1;1H" << std::flush;
 }
