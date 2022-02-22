@@ -55,28 +55,6 @@ struct Renderer
     void render(GameObject* go)
     {
         objs.push_back(go);
-        // charNum = input.size();
-    }
-    
-    void clear()
-    {
-        // std::string clearStr("");
-        // buffer.clear();
-
-        // while(charNum)
-        // {
-        //     clearStr += "\b";
-        //     charNum--;
-        // }
-
-        std::string clearStr("");
-
-        for (int i = 0; i < (DISPLAY_X - 10) * (DISPLAY_Y - 10); i++)
-        {
-            clearStr += "\b ";
-        }
-
-        std::cout << clearStr << std::flush;
     }
 
 private:

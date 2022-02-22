@@ -60,32 +60,13 @@ struct GameObject
 {
     Vector2D position;
     Vector2D size;
-    Vector2D center;
-
-    unsigned int radius;
 
     GameObject(const int &x, const int &y, const unsigned int &width, const unsigned int &height)
-        : position(x, y), size(width, height) { radius = std::max(width, height); _updateCenter(); } 
+        : position(x, y), size(width, height) { } 
     GameObject(const unsigned int &width, const unsigned int &height)
-        : position(), size(width, height) { radius = std::max(width, height); _updateCenter(); }
+        : position(), size(width, height) { }
     GameObject() 
-        : position(), size(1, 1) { radius = 1; _updateCenter(); } 
-
-    Vector2D getCenter()
-    {
-        _updateCenter();
-        return center;
-    }
-
-    bool cheapCollision(const GameObject &other) const
-    {
-        int distance = center.distance(other.center);
-
-        // if (distance < radius + other.radius)
-        //     std::cout << "collision" << std::endl;
-
-        return distance < radius /*+ other.radius*/;
-    }
+        : position(), size(1, 1) { } 
 
     /**
      * @brief Not completely done, so don't use it
@@ -94,10 +75,6 @@ struct GameObject
      */
     bool collision(const GameObject& other, const Vector2D& speed) const
     {
-        if (cheapCollision(other))
-        {
-            // check if the object are colliding vertically or horizontally
-        }
         int x_check = position.x + !std::signbit(speed.x) * size.x;
         int y_check = position.y + !std::signbit(speed.y) * size.y;
 
@@ -111,17 +88,24 @@ struct GameObject
     void move(const int& x, const int& y)
     {
         position += Vector2D(x, y);
+    }
 
-        _updateCenter();
+    void move(const Vector2D& speed)
+    {
+        position += speed;
     }
 
     void moveTo(const int& x, const int& y)
     {
         position.x = x; position.y = y;
-        _updateCenter();
     }
 
-    void toArray(std::vector<Vector2D> *out)
+    void moveTo(const Vector2D new_pos)
+    {
+        position = new_pos;
+    }
+
+    void toArray(std::vector<Vector2D> *out) const
     {
         out->reserve(size.value());
 
@@ -133,12 +117,6 @@ struct GameObject
     }
 
 private:
-    void _updateCenter()
-    {
-        center.x = position.x + std::floor(size.x/2);
-        center.y = position.y + std::floor(size.y/2);
-    }
-
     // TODO: move this function to more appropriate spot
     static void mulString(std::string* str, const int& count)
     {
