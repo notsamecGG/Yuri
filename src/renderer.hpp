@@ -11,13 +11,26 @@
 #define DISPLAY_Y 20
 
 
+/**
+ * @brief Render object serves for managing GameObjects and their render, there should be only one in the whole build
+ * 
+ */
 struct Renderer
 {
+    /**
+     * @brief Construct a new empty Renderer object
+     * 
+     */
     Renderer ()
-        : charNum(0), objs() { }
+        : objs() { }
 
     // WARNING: objs are rendered from left to right, so be consious of that 
     // TODO: repair this warning
+
+    /**
+     * @brief Render list of gameobjects (use render(GameObject go) to add go to list)
+     * 
+     */
     void render() 
     { 
         if (objs.size() == 0)
@@ -52,12 +65,18 @@ struct Renderer
         std::cout << display << std::flush;
     }
 
+    /**
+     * @brief Add game object to render list
+     * 
+     * @param go 
+     */
     void render(GameObject* go)
     {
         objs.push_back(go);
     }
 
 private:
+    // sum all of the objects' dimensions in GO list 
     int sizeSum()
     {
         int size = 0;
@@ -69,6 +88,5 @@ private:
     }
 
 private:
-    unsigned int charNum; // count of all chars in fram (formated)
-    std::vector<GameObject*> objs;
+    std::vector<GameObject*> objs; // list of game objects
 };
